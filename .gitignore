@@ -1,0 +1,43 @@
+# dependencies
+node_modules
+
+# build
+dist
+build
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# coverage (tests)
+coverage
+
+# vite
+.vite
+
+# typescript
+*.tsbuildinfo
+
+# system files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+
+# temporary files
+.tmp
+.temp
+.cache
