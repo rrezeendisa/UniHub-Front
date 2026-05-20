@@ -1,50 +1,48 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { TableReservation } from '../mocks/agendar-mesa-mock'
-import { tablesMock } from '../mocks/agendar-mesa-mock'
-import { loadPersistedReservations } from '../utils/persistence'
+import type { TableReservation } from '../types/table'
+import { mesaService } from '../services/mesa-service'
 
 export function useTableAvailability() {
-  const computeTablesWithPersistence = useCallback(() => {
-    try {
-      const persisted = loadPersistedReservations()
-      const reservedNames = new Set(
-        persisted.filter((r) => r.type === 'mesa').map((r) => r.reservationName)
-      )
+  const [tables, setTables] = useState<TableReservation[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-      return tablesMock.map((t) => ({
-        ...t,
-        isAvailable: Boolean(t.isAvailable && !reservedNames.has(t.name)),
+  const fetchTables = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      const mesas = await mesaService.getMesas()
+      const formattedTables: TableReservation[] = mesas.map(m => ({
+        id: m.idMesa,
+        name: m.nome,
+        side: (m.lado === 'esquerda' ? 'left' : 'right') as 'left' | 'right',
+        isAvailable: m.disponivel
       }))
-    } catch {
-      return tablesMock
+      setTables(formattedTables)
+    } catch (error) {
+      console.error('Erro ao buscar mesas:', error)
+    } finally {
+      setIsLoading(false)
     }
   }, [])
 
-  const [tables, setTables] = useState<TableReservation[]>(() =>
-    computeTablesWithPersistence()
-  )
+  useEffect(() => {
+    fetchTables()
+  }, [fetchTables])
 
   useEffect(() => {
-    const handler = () => setTables(computeTablesWithPersistence())
+    const handler = () => {
+      fetchTables()
+    }
 
     window.addEventListener('meus-agendamentos:changed', handler)
 
-    const storageHandler = (e: StorageEvent) => {
-      if (e.key === 'meus_agendamentos_v1') {
-        setTables(computeTablesWithPersistence())
-      }
-    }
-
-    window.addEventListener('storage', storageHandler)
-
     return () => {
       window.removeEventListener('meus-agendamentos:changed', handler)
-      window.removeEventListener('storage', storageHandler)
     }
-  }, [computeTablesWithPersistence])
+  }, [fetchTables])
 
   return {
     tables,
-    refreshTables: () => setTables(computeTablesWithPersistence()),
+    isLoading,
+    refreshTables: fetchTables,
   }
 }

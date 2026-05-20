@@ -43,7 +43,7 @@ export function LoginPage() {
                   navigate('/cadastro')
                 }}
               >
-                Crie agora!
+                Crie agora mesmo!
               </ALink>
             </div>
           </div>

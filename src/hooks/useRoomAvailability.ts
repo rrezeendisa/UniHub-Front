@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { roomsMock, type RoomReservation } from '../mocks/agendar-sala-mock'
-import { loadPersistedReservations } from '../utils/persistence'
+import type { RoomReservation } from '../types/rooms'
+import { salaService, adaptSalaToRoomReservation } from '../services/sala-service'
 
 interface ComputedRoom {
   room: RoomReservation
@@ -8,39 +8,38 @@ interface ComputedRoom {
 }
 
 export function useRoomAvailability() {
-  const computeRoomsWithPersistence = useCallback((): ComputedRoom[] => {
+  const [computedRooms, setComputedRooms] = useState<ComputedRoom[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  const computeRoomsWithPersistence = useCallback(async () => {
+    setIsLoading(true)
     try {
-      const persisted = loadPersistedReservations()
-      const reservedNames = new Set(
-        persisted.filter((r) => r.type === 'sala').map((r) => r.reservationName)
-      )
-      return roomsMock.map((room) => ({
+      const salas = await salaService.getSalas()
+      const rooms = salas.map(adaptSalaToRoomReservation)
+
+      const computed = rooms.map((room) => ({
         room,
-        isAvailable: !reservedNames.has(room.className),
+        isAvailable: true, // Por enquanto todas as salas da API são consideradas disponíveis na listagem
       }))
-    } catch {
-      return roomsMock.map((room) => ({ room, isAvailable: true }))
+      
+      setComputedRooms(computed)
+    } catch (error) {
+      console.error('Erro ao buscar salas:', error)
+    } finally {
+      setIsLoading(false)
     }
   }, [])
 
-  const [computedRooms, setComputedRooms] = useState<ComputedRoom[]>(() =>
+  useEffect(() => {
     computeRoomsWithPersistence()
-  )
+  }, [computeRoomsWithPersistence])
 
   useEffect(() => {
-    const handler = () => setComputedRooms(computeRoomsWithPersistence())
+    const handler = () => computeRoomsWithPersistence()
     window.addEventListener('meus-agendamentos:changed', handler)
-
-    const storageHandler = (e: StorageEvent) => {
-      if (e.key === 'meus_agendamentos_v1') {
-        setComputedRooms(computeRoomsWithPersistence())
-      }
-    }
-    window.addEventListener('storage', storageHandler)
 
     return () => {
       window.removeEventListener('meus-agendamentos:changed', handler)
-      window.removeEventListener('storage', storageHandler)
     }
   }, [computeRoomsWithPersistence])
 
@@ -54,7 +53,8 @@ export function useRoomAvailability() {
 
   return {
     computedRooms,
-    refreshRooms: () => setComputedRooms(computeRoomsWithPersistence()),
+    isLoading,
+    refreshRooms: computeRoomsWithPersistence,
     getAvailabilityMap,
   }
 }

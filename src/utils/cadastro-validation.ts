@@ -1,6 +1,7 @@
 import * as v from 'valibot'
 
 export type CadastroFormErrors = {
+  nome?: string
   role?: string
   ra?: string
   email?: string
@@ -10,6 +11,11 @@ export type CadastroFormErrors = {
 
 const cadastroSchema = v.pipe(
   v.object({
+    nome: v.pipe(
+      v.string('Nome é obrigatório'),
+      v.minLength(3, 'Nome deve ter pelo menos 3 caracteres'),
+      v.maxLength(100, 'Nome muito longo')
+    ),
     role: v.picklist(['aluno', 'professor']),
     ra: v.pipe(
       v.string('RA é obrigatório'),
@@ -49,6 +55,7 @@ const cadastroSchema = v.pipe(
 )
 
 export function validateCadastroForm(values: {
+  nome: string
   role: 'aluno' | 'professor'
   ra: string
   email: string
@@ -66,6 +73,7 @@ export function validateCadastroForm(values: {
   for (const issue of result.issues) {
     const pathKey = issue.path?.[0]?.key
     if (
+      pathKey === 'nome' ||
       pathKey === 'role' ||
       pathKey === 'ra' ||
       pathKey === 'email' ||

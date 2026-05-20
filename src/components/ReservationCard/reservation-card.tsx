@@ -19,15 +19,15 @@ export function ReservationCard({
   onCancel,
 }: ReservationCardProps) {
   return (
-    <InfoCard className="group flex h-full flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+    <InfoCard className="group flex h-full flex-col justify-between p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <div>
         <InfoCardHeader
           badge={reservationName}
           badgeClassName="mx-auto"
-          className="mb-5"
+          className="mb-4"
         />
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2.5">
           <div className="flex items-center gap-2">
             <CalendarIcon className="h-4 w-4 flex-shrink-0 text-[var(--color-text-muted)]" />
 
@@ -58,7 +58,7 @@ export function ReservationCard({
         </div>
       </div>
 
-      <div className="mt-6 flex justify-center">
+      <div className="mt-5 flex justify-center">
         <Button variant="outline" size="medium" onClick={onCancel}>
           Cancelar
         </Button>

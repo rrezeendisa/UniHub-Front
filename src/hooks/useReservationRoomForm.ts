@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { getErrorMessage } from '../utils/error-handler'
 
 export interface ReservationData {
   name: string
@@ -18,10 +19,8 @@ function formatDateToPtBr(date: Date) {
 }
 
 export function useReservationRoomForm({
-  isOpen,
-  onClose,
   onSubmit,
-}: UseReservationRoomFormParams) {
+}: Omit<UseReservationRoomFormParams, 'onClose' | 'isOpen'>) {
   const [name, setName] = useState('')
   const [date, setDate] = useState<Date | null>(null)
   const [time, setTime] = useState('')
@@ -35,13 +34,6 @@ export function useReservationRoomForm({
     setJustification('')
   }, [])
 
-  useEffect(() => {
-    if (!isOpen) {
-      clearForm()
-      setIsSubmitting(false)
-    }
-  }, [isOpen, clearForm])
-
   const canSubmit = useMemo(
     () =>
       !!name.trim() &&
@@ -52,31 +44,40 @@ export function useReservationRoomForm({
     [date, isSubmitting, justification, name, time]
   )
 
+  const [error, setError] = useState<string | null>(null)
+
   const handleSubmit = useCallback(
     async (event?: React.SyntheticEvent) => {
+      console.log('submit iniciado')
       event?.preventDefault()
 
-      if (!date || !canSubmit) return
+      if (!date || !canSubmit) {
+        if (!name.trim() || !date || !time || !justification.trim()) {
+          setError('Por favor, preencha todos os campos obrigatórios.')
+        } else if (isSubmitting) {
+          console.warn('Submissão já em andamento')
+        }
+        return
+      }
 
+      setError(null)
       setIsSubmitting(true)
 
       try {
-        await Promise.resolve(
-          onSubmit({
-            name: name.trim(),
-            date: formatDateToPtBr(date),
-            time,
-            justification: justification.trim(),
-          })
-        )
-
-        clearForm()
-        onClose()
+        await onSubmit({
+          name: name.trim(),
+          date: formatDateToPtBr(date),
+          time,
+          justification: justification.trim(),
+        })
+      } catch (err) {
+        console.error('Erro na submissão:', err)
+        setError(getErrorMessage(err))
       } finally {
         setIsSubmitting(false)
       }
     },
-    [canSubmit, clearForm, date, justification, name, onClose, onSubmit, time]
+    [canSubmit, date, justification, name, onSubmit, time, isSubmitting]
   )
 
   return {
@@ -92,5 +93,6 @@ export function useReservationRoomForm({
     canSubmit,
     handleSubmit,
     clearForm,
+    error,
   }
 }

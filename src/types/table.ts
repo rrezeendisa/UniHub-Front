@@ -2,7 +2,14 @@ export interface Table {
   idMesa: number
   nome: string
   lado: string
-  disponível: boolean
+  disponivel: boolean
+}
+
+export interface TableReservation {
+  id: number
+  name: string
+  side: 'left' | 'right'
+  isAvailable: boolean
 }
 
 export interface CreateTableRequest {

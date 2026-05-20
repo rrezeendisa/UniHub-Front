@@ -1,13 +1,4 @@
-export type ReservationType = 'mesa' | 'sala'
-
-export interface MeusAgendamentosReservation {
-  id: number
-  reservationName: string
-  type: ReservationType
-  date: string
-  startTime: string
-  endTime: string
-}
+import type { MeusAgendamentosReservation } from '../types/schedule'
 
 export const meusAgendamentosMock: MeusAgendamentosReservation[] = [
   {

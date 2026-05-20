@@ -1,16 +1,5 @@
 // src/pages/agendar-sala/mocks/agendar-sala-mock.ts
-export interface RoomResource {
-  type: string
-  amount: number
-}
-
-export interface RoomReservation {
-  id: number
-  className: string
-  building: 'L'
-  resources: RoomResource[]
-  places: number
-}
+import type { RoomReservation } from '../types/rooms'
 
 export const roomsMock: RoomReservation[] = [
   {

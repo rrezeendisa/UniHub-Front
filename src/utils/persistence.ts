@@ -1,4 +1,4 @@
-import type { MeusAgendamentosReservation } from '../mocks/meus-agendamentos-mock'
+import type { MeusAgendamentosReservation } from '../types/schedule'
 import { meusAgendamentosMock } from '../mocks/meus-agendamentos-mock'
 
 const STORAGE_KEY = 'meus_agendamentos_v1'

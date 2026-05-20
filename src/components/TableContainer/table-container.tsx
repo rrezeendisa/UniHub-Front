@@ -1,39 +1,26 @@
 import { TableSection } from '../TableSection/table-section'
 import { getAvailableTablesBySide } from '../../utils/agendar-mesa-utils'
-import type { TableReservation } from '../../mocks/agendar-mesa-mock'
+import type { TableReservation } from '../../types/table'
 
 interface TableContainerProps {
   tables: TableReservation[]
-  onTableSelect: (tableName: string) => void
+  onTableSelect: (table: TableReservation) => void
 }
 
 export function TableContainer({ tables, onTableSelect }: TableContainerProps) {
-  const leftAvailable = getAvailableTablesBySide(tables, 'left').some(
-    (t) => t.isAvailable
-  )
-  const rightAvailable = getAvailableTablesBySide(tables, 'right').some(
-    (t) => t.isAvailable
-  )
-
-  const leftFirstAvailable = getAvailableTablesBySide(tables, 'left').find(
-    (t) => t.isAvailable
-  )
-  const rightFirstAvailable = getAvailableTablesBySide(tables, 'right').find(
-    (t) => t.isAvailable
-  )
+  const leftTables = getAvailableTablesBySide(tables, 'left')
+  const rightTables = getAvailableTablesBySide(tables, 'right')
 
   return (
-    <div className="rounded-2xl border border-[var(--color-gray-light)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
-      <div className="grid gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
+    <div className="overflow-x-hidden rounded-2xl border border-[var(--color-gray-light)] bg-[var(--color-surface)] p-3 shadow-sm sm:p-4">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)] lg:items-start xl:grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)]">
         <TableSection
           side="left"
-          isAvailable={leftAvailable}
-          onSelect={() =>
-            leftFirstAvailable && onTableSelect(leftFirstAvailable.name)
-          }
+          tables={leftTables}
+          onSelect={onTableSelect}
         />
 
-        <div className="flex min-h-[72px] items-center justify-center rounded-2xl border border-dashed border-[var(--color-gray-light)] bg-[var(--color-bg)] px-4 py-3">
+        <div className="flex min-h-[64px] items-center justify-center self-center rounded-2xl border border-dashed border-[var(--color-gray-light)] bg-[var(--color-bg)] px-3 py-3 lg:min-h-[110px]">
           <span className="text-sm font-medium text-[var(--color-text-muted)] sm:text-base">
             Recepção
           </span>
@@ -41,10 +28,8 @@ export function TableContainer({ tables, onTableSelect }: TableContainerProps) {
 
         <TableSection
           side="right"
-          isAvailable={rightAvailable}
-          onSelect={() =>
-            rightFirstAvailable && onTableSelect(rightFirstAvailable.name)
-          }
+          tables={rightTables}
+          onSelect={onTableSelect}
         />
       </div>
     </div>

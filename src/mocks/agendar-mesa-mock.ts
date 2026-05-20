@@ -1,9 +1,4 @@
-export interface TableReservation {
-  id: number
-  name: string
-  side: 'left' | 'right'
-  isAvailable: boolean
-}
+import type { TableReservation } from '../types/table'
 
 export const generateTableMocks = (): TableReservation[] => {
   const tables: TableReservation[] = []

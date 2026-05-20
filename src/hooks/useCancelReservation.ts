@@ -1,10 +1,6 @@
 import { useState } from 'react'
-import type { MeusAgendamentosReservation } from '../mocks/meus-agendamentos-mock'
-import {
-  loadPersistedReservations,
-  savePersistedReservations,
-  addCanceledMockId,
-} from '../utils/persistence'
+import type { MeusAgendamentosReservation } from '../types/schedule'
+import { agendamentoService } from '../services/agendamento-service'
 
 interface CancelReservationHandler {
   onSuccess?: (reservation: MeusAgendamentosReservation) => void
@@ -17,18 +13,8 @@ export function useCancelReservation(handlers?: CancelReservationHandler) {
   const execute = async (reservation: MeusAgendamentosReservation) => {
     try {
       setIsLoading(true)
-      await new Promise((r) => setTimeout(r, 500))
-
-      const isMockReservation = reservation.id < 100000
-
-      if (isMockReservation) {
-        addCanceledMockId(reservation.id)
-      } else {
-        const persisted = loadPersistedReservations().filter(
-          (p) => p.id !== reservation.id
-        )
-        savePersistedReservations(persisted)
-      }
+      
+      await agendamentoService.cancelarAgendamento(reservation.id)
 
       window.dispatchEvent(new Event('meus-agendamentos:changed'))
       handlers?.onSuccess?.(reservation)

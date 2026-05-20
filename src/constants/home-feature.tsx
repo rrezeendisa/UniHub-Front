@@ -2,7 +2,7 @@ import React from 'react'
 import { DeskIcon } from '../icons/lib/desk-icon'
 import { ScheduleIcon } from '../icons/lib/schedule-icon'
 import { BlackboardIcon } from '../icons/lib/blackboard-icon'
-import { CalendarIcon } from '../icons/lib/calendar-icon'
+import { ClipboardIcon } from '../icons/lib/clipboard-icon'
 
 export interface Feature {
   id: string
@@ -34,11 +34,11 @@ export const HOME_FEATURES: Feature[] = [
       'Professores podem solicitar projetores, notebooks e outros recursos para as aulas.',
   },
   {
-    id: 'view-schedules',
-    icon: <CalendarIcon height={32} width={32} />,
-    title: 'Cronogramas',
+    id: 'track-reservations',
+    icon: <ClipboardIcon height={32} width={32} />,
+    title: 'Acompanhe reservas',
     description:
-      'Visualize onde cada professor estará, com dia, horário e sala de forma organizada.',
+      'Visualize seus agendamentos ativos e gerencie cancelamentos de forma simples.',
   },
 ]
 

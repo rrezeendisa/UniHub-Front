@@ -5,7 +5,6 @@ import { LoginPage } from '../pages/login/login-page'
 import { CadastroPage } from '../pages/cadastro/cadastro-page'
 import { AgendarMesaPage } from '../pages/agendar-mesa/agendar-mesa-page'
 import { AgendarSalaPage } from '../pages/agendar-sala/agendar-sala-page'
-import { CronogramaPage } from '../pages/cronograma/cronograma-page'
 import { MeusAgendamentosPage } from '../pages/meus-agendamentos/meus-agendamentos'
 
 export const router = createBrowserRouter([
@@ -31,10 +30,6 @@ export const router = createBrowserRouter([
       {
         path: '/agendar-sala',
         element: <AgendarSalaPage />,
-      },
-      {
-        path: '/cronograma',
-        element: <CronogramaPage />,
       },
       {
         path: '/meus-agendamentos',

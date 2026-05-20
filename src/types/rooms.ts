@@ -6,6 +6,19 @@ export interface Room {
   recursos: string
 }
 
+export interface RoomResource {
+  type: string
+  amount: number
+}
+
+export interface RoomReservation {
+  id: number
+  className: string
+  building: string
+  resources: RoomResource[]
+  places: number
+}
+
 export interface CreateRoomRequest {
   nome: string
   predio: string

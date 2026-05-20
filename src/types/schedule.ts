@@ -1,5 +1,17 @@
 import { ScheduleStatus, ScheduleType } from './enums'
 
+export type ReservationType = 'mesa' | 'sala'
+
+export interface MeusAgendamentosReservation {
+  id: number
+  reservationName: string
+  type: ReservationType
+  date: string
+  startTime: string
+  endTime: string
+  status?: 'active' | 'canceled'
+}
+
 export interface CreateScheduleRequest {
   idUsuario: number
   idSala: number

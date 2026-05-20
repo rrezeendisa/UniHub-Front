@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { MenuCard } from '../../components/Menu/menu-card'
 import { Toast } from '../../components/Toast/toast'
 import { Button } from '../../components/Button/button'
 import { CancelationModal } from '../../components/Modal/cancelation-modal'
 import { LoadingSpinner } from '../../components/LoadingSpinner/loading-spinner'
-import type { MeusAgendamentosReservation } from '../../mocks/meus-agendamentos-mock'
+import type { MeusAgendamentosReservation } from '../../types/schedule'
 import { Badge } from '../../components/Badge/badge'
 import { openFeedbackForm } from '../../utils/forms-redirect-utils'
 import { useMeusAgendamentos } from '../../hooks/useMeusAgendamentos'
@@ -14,35 +14,28 @@ import { ReservationsList } from '../../components/ReservationsList/reservations
 
 function PageHeader() {
   return (
-    <div className="mx-auto max-w-4xl text-center">
-      <div className="mb-4">
+    <div className="mx-auto max-w-3xl text-center">
+      <div className="mb-3">
         <Badge>Meus agendamentos</Badge>
       </div>
 
       <h1 className="mt-4 text-xl! font-bold leading-tight text-[var(--color-text)] sm:text-3xl lg:text-4xl">
-        Veja seus agendamentos disponíveis.
+        Veja seus agendamentos disponiveis.
       </h1>
 
       <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)] sm:text-base">
-        Se organize e cancele quando quiser. Cada cancelamento é imediato e
-        libera o espaço para outros usuários.
+        Acompanhe e gerencie suas reservas em tempo real.
       </p>
     </div>
   )
 }
 
 export function MeusAgendamentosPage() {
-  const [isLoading, setIsLoading] = useState(true)
-  const { reservations, removeReservation } = useMeusAgendamentos()
+  const { reservations, isLoading, removeReservation } = useMeusAgendamentos()
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
   const [selectedReservation, setSelectedReservation] =
     useState<MeusAgendamentosReservation | null>(null)
   const [toastMessage, setToastMessage] = useState<string | null>(null)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500)
-    return () => clearTimeout(timer)
-  }, [])
 
   const { execute: cancelReservation, isLoading: isLoadingCancel } =
     useCancelReservation({
@@ -74,32 +67,35 @@ export function MeusAgendamentosPage() {
   }
 
   if (isLoading) {
-    return (
-      <LoadingSpinner fullScreen message="Carregando..." />
-    )
+    return <LoadingSpinner fullScreen message="Carregando..." />
   }
 
   return (
-    <div className="min-h-screen px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+    <div className="min-h-screen overflow-x-hidden px-4 py-4 sm:px-5 sm:py-5 lg:px-6">
       {toastMessage && (
         <Toast type="success" onClose={() => setToastMessage(null)}>
           {toastMessage}
         </Toast>
       )}
 
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 lg:flex-row lg:gap-8">
-        <aside className="w-full flex-shrink-0 lg:w-72 lg:min-w-[18rem]">
-          <div className="mb-4">
-            <Button variant="primary" size="medium" onClick={openFeedbackForm}>
-              Dê o seu feedback
+      <div className="mx-auto flex w-full max-w-[92rem] flex-col items-stretch gap-5 lg:flex-row lg:gap-5">
+        <aside className="flex w-full flex-shrink-0 flex-col gap-3 lg:w-72 lg:min-w-[18rem] lg:self-stretch">
+          <div>
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={openFeedbackForm}
+              className="w-full"
+            >
+              D&ecirc; o seu feedback
             </Button>
           </div>
 
-          <MenuCard />
+          <MenuCard className="lg:min-h-[520px] lg:flex-1" />
         </aside>
 
-        <main className="flex-1">
-          <section className="rounded-3xl border border-[var(--color-gray-light)] bg-[var(--color-surface)] p-6 shadow-sm sm:p-8 lg:p-6">
+        <main className="min-w-0 flex-1">
+          <section className="overflow-hidden rounded-3xl border border-[var(--color-gray-light)] bg-[var(--color-surface)] p-5 shadow-sm sm:p-6 lg:p-6">
             <PageHeader />
 
             <ReservationsList

@@ -25,7 +25,7 @@ export function HeroSection({ onStartClick, benefits }: HeroSectionProps) {
               organização.
             </h1>
             <p className="mx-auto max-w-2xl text-base leading-7 text-[var(--color-text-muted)] sm:text-lg lg:mx-0">
-              Centralize reservas, cronogramas e agendamentos em uma experiência
+              Centralize reservas e agendamentos em uma experiência
               simples, rápida e clara para o dia a dia.
             </p>
           </div>

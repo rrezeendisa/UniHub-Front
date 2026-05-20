@@ -9,30 +9,33 @@ export function CadastroForm() {
   const {
     role,
     setRole,
+    nome,
     ra,
     email,
     password,
     confirmPassword,
     errors,
     isSubmitting,
+    apiError,
     updateField,
     submit,
     clearErrors,
   } = useCadastroForm()
 
   return (
-    <section className="w-full rounded-lg bg-[var(--color-surface)] px-6 py-8 shadow-sm">
-      <h1 className="text-center text-2xl font-bold text-[var(--color-primary)]">
-        Cadastrar
-      </h1>
-
+    <section className="w-full rounded-2xl border border-[var(--color-gray-light)] bg-[var(--color-surface)] px-4 py-5 shadow-sm sm:px-6 sm:py-6 lg:px-8">
       <form
         onSubmit={(event) => {
           event.preventDefault()
           void submit()
         }}
-        className="mt-6 flex flex-col gap-4"
+        className="flex flex-col gap-3"
       >
+        {apiError && (
+          <p className="text-sm font-medium text-[var(--color-error)] text-center">
+            {apiError}
+          </p>
+        )}
         <div className="flex justify-center gap-8">
           <Radio
             name="role"
@@ -54,6 +57,24 @@ export function CadastroForm() {
               clearErrors()
             }}
           />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <TextInput
+            label="Nome Completo"
+            value={nome}
+            onChange={(value) => updateField('nome', value)}
+            isObrigatorie
+            disabled={isSubmitting}
+          />
+          {errors.nome && (
+            <p
+              className="text-sm font-medium text-[var(--color-error)]"
+              role="alert"
+            >
+              {errors.nome}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -126,7 +147,7 @@ export function CadastroForm() {
           )}
         </div>
 
-        <div className="pt-2 flex justify-center">
+        <div className="pt-1 flex justify-center">
           <Button
             variant="primary"
             size="large"

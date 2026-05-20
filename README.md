@@ -11,7 +11,6 @@ O **UniHub** é um sistema voltado para o ambiente universitário, com o objetiv
 * 📅 Agendamento de salas de aula
 * 📚 Reserva de mesas de estudo
 * 🖥️ Solicitação de recursos (projetores, notebooks, etc.)
-* 📊 Visualização de cronogramas de professores
 
 A proposta é melhorar a organização e o aproveitamento dos espaços físicos da instituição.
 

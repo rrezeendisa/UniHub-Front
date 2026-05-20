@@ -45,10 +45,11 @@ export function Navbar() {
         <button
           type="button"
           onClick={() => navigate('/')}
-          className="transition-opacity duration-200 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 rounded"
+          className="flex items-center gap-3 transition-opacity duration-200 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 rounded"
           aria-label="Voltar para home"
         >
           <img src={Logo} alt="Logo" className="h-10 w-10" />
+          <span className="text-xl font-bold text-[var(--color-primary)]">UniHub</span>
         </button>
 
         <Button variant="primary" size="small" onClick={handleButtonClick}>

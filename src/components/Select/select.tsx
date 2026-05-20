@@ -56,22 +56,24 @@ export function Select({
           </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
 
-        <SelectPrimitive.Content
-          className="
-            bg-[var(--color-bg)]
-            border border-[var(--color-gray-light)]
-            rounded-lg
-            shadow-lg
-            z-50
-            w-[var(--radix-select-trigger-width)]
-        "
-          position="popper"
-          sideOffset={8}
-        >
-          <SelectPrimitive.Viewport className="p-2 max-h-48 overflow-auto scrollbar-thin scrollbar-thumb-[var(--color-primary)] scrollbar-track-transparent">
-            {children}
-          </SelectPrimitive.Viewport>
-        </SelectPrimitive.Content>
+        <SelectPrimitive.Portal>
+          <SelectPrimitive.Content
+            className="
+              bg-[var(--color-bg)]
+              border border-[var(--color-gray-light)]
+              rounded-lg
+              shadow-lg
+              z-[60]
+              w-[var(--radix-select-trigger-width)]
+          "
+            position="popper"
+            sideOffset={8}
+          >
+            <SelectPrimitive.Viewport className="p-2 max-h-48 overflow-auto scrollbar-thin scrollbar-thumb-[var(--color-primary)] scrollbar-track-transparent">
+              {children}
+            </SelectPrimitive.Viewport>
+          </SelectPrimitive.Content>
+        </SelectPrimitive.Portal>
       </SelectPrimitive.Root>
 
       <label

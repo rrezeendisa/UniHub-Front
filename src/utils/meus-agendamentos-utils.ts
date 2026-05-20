@@ -1,9 +1,15 @@
-import type { MeusAgendamentosReservation } from '../mocks/meus-agendamentos-mock'
+import type { MeusAgendamentosReservation } from '../types/schedule'
 
 export const formatTimeRange = (startTime: string, endTime: string): string => {
   const [startHour] = startTime.split(':')
   const [endHour] = endTime.split(':')
   return `${startHour}h-${endHour}h`
+}
+
+export const addOneHourToTime = (time: string): string => {
+  const [hour = '0', minute = '00', second = '00'] = time.split(':')
+  const nextHour = (Number(hour) + 1) % 24
+  return `${String(nextHour).padStart(2, '0')}:${minute}:${second}`
 }
 
 export const sortReservationsByDate = (

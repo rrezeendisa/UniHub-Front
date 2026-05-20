@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactNode } from 'react'
+import { type MouseEvent, type ReactNode, useEffect } from 'react'
 import { Cross2Icon } from '@radix-ui/react-icons'
 
 interface ModalProps {
@@ -9,6 +9,17 @@ interface ModalProps {
 }
 
 export function Modal({ title, isOpen, onClose, children }: ModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   return (
