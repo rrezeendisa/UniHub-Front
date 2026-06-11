@@ -4,6 +4,7 @@ import { MenuItem } from './menu-item'
 import { DeskIcon } from '../../icons/lib/desk-icon'
 import { ScheduleIcon } from '../../icons/lib/schedule-icon'
 import { ClipboardIcon } from '../../icons/lib/clipboard-icon'
+import { KeyIcon } from '../../icons/lib/key-icon'
 
 interface MenuItemConfig {
   label: string
@@ -26,6 +27,11 @@ const menuItems: MenuItemConfig[] = [
     label: 'Meus agendamentos',
     href: '/meus-agendamentos',
     icon: <ClipboardIcon />,
+  },
+  {
+    label: 'Chave Virtual',
+    href: '/chave-virtual',
+    icon: <KeyIcon />,
   },
 ]
 

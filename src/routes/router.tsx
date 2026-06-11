@@ -6,6 +6,7 @@ import { CadastroPage } from '../pages/cadastro/cadastro-page'
 import { AgendarMesaPage } from '../pages/agendar-mesa/agendar-mesa-page'
 import { AgendarSalaPage } from '../pages/agendar-sala/agendar-sala-page'
 import { MeusAgendamentosPage } from '../pages/meus-agendamentos/meus-agendamentos'
+import { ChaveVirtualPage } from '../pages/chave-virtual/chave-virtual-page'
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: '/meus-agendamentos',
         element: <MeusAgendamentosPage />,
+      },
+      {
+        path: '/chave-virtual',
+        element: <ChaveVirtualPage />,
       },
     ],
   },
